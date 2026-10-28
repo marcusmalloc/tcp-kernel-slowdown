@@ -1,0 +1,16 @@
+services:
+  server:
+    image: jmalloc/echo-server:v0.3.7
+
+  slowdown:
+    build: .
+    network_mode: service:server
+    cap_add: [NET_ADMIN]
+    init: true
+    command: ["8080", "300"]
+
+  probe:
+    build: .
+    profiles: [probe]
+    entrypoint: ["probe"]
+    command: ["server:8080"]
